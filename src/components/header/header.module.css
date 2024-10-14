@@ -1,0 +1,33 @@
+.headerHomePage {
+    background-image: url("/assets/home_banner.png");
+    background-size: cover;
+    min-height: 220px;
+    height: fit-content;
+}
+
+.nav-link-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+.nav-link{
+    width: 150px;
+    /* height: 32px; */
+    font-size: 16px;
+    text-decoration: none;
+    align-content: center;
+    text-align: center;
+    color: #fff;
+    padding: 5px 0;
+    /* font-weight: 700; */
+}
+
+.nav-link:hover{
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.active{
+    font-weight: bold;
+    border-bottom: 2px solid #ccc;
+}
