@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/header/header";
 import Footer from "@/components/footer/footer";
+import { AuthProvider } from "@/context/AuthContextProvider";
+import { NotificationProvider } from "@/context/NotificationContextProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,11 +17,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <Header/>
-        {children}
-        <Footer/>
-      </body>
+      <NotificationProvider>
+        <AuthProvider>
+          <body>
+            <Header />
+            {children}
+            <Footer />
+          </body>
+        </AuthProvider>
+      </NotificationProvider>
     </html>
   );
 }
