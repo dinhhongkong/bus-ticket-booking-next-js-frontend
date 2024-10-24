@@ -10,7 +10,7 @@ export const axiosClient = axios.create({
 if (typeof window !== 'undefined') {
   axiosClient.interceptors.request.use(
     (config) => {
-      const accessToken = localStorage.getItem('token');
+      const accessToken = localStorage.getItem('accessToken');
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
