@@ -2,19 +2,18 @@
 import { useState, useEffect, useContext } from 'react';
 import { jwtDecode } from "jwt-decode";
 import React from 'react';
-
+import { User } from '@/types/models/Auth';
+import Cookies from 'js-cookie';
 interface IAuthContext {
   isAuthenticated: boolean;
-  username: string | null;
-  role: string | null;
+  user: User | null;
   login: (token: string) => void;
   logout: () => void;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({
   isAuthenticated: false,
-  username: null,
-  role: null,
+  user: null,
   login: () => {},
   logout: () => {},
 });
@@ -22,36 +21,42 @@ export const AuthContext = React.createContext<IAuthContext>({
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState<string | null>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
+    // const token = localStorage.getItem('accessToken');
     if (token) {
-      const decodedToken = jwtDecode(token) as { username: string; role: string };
+      const decodedToken : User = jwtDecode(token) ;
+      if (decodedToken.exp < Date.now() / 1000) {
+        setIsAuthenticated(false);
+        Cookies.remove('accessToken');
+        return
+      }
       setIsAuthenticated(true);
-      setUsername(decodedToken.username);
-      setRole(decodedToken.role);
+      setUser(decodedToken);
     }
   }, []);
 
   const login = (token: string) => {
-    localStorage.setItem('accessToken', token);
-    const decodedToken = jwtDecode(token) as { username: string; role: string };
+    Cookies.set('accessToken', token)
+    // localStorage.setItem('accessToken', token);
+    const decodedToken : User = jwtDecode(token);
     setIsAuthenticated(true);
-    setUsername(decodedToken.username);
-    setRole(decodedToken.role);
+    setUser(decodedToken);
   };
 
   const logout = () => {
-    localStorage.removeItem('accessToken');
+    Cookies.remove('accessToken');
+    // localStorage.removeItem('accessToken');
     setIsAuthenticated(false);
-    setUsername(null);
-    setRole(null);
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, username, role, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
