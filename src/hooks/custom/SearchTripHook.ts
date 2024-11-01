@@ -1,50 +1,55 @@
 import { get } from "@/api/api";
+import { Province } from "@/types/models/Province";
 import { Trip } from "@/types/models/Trip";
-import exp from "constants";
 import { useState } from "react";
 
 export interface SearchTripParams {
-  departureProvinceId?: number;
-  destinationProvinceId?: number;
+  departure?: Province;
+  destination?: Province;
   startDate?: string;
   endDate?: string;
 }
 
 export const useSearchTrip = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [departureTrip, setDepartureTrip] = useState<Trip[]>([]);
   const [roundTrip, setRoundTrip] = useState<Trip[]>([]);
-
   const [searchParams, setSearchParams] = useState<SearchTripParams>({});
 
   const fetchSearchRoundTrip = async () => {
-    const { departureProvinceId, destinationProvinceId, startDate } = searchParams;
+    const { departure, destination, startDate, endDate } = searchParams;
     try {
-      const response: Trip[] = await get(`/booking/search/trip?departureProvinceId=${departureProvinceId}&destinationProvinceId=${destinationProvinceId}&startDate=${startDate}`);
+      setIsLoading(true);
+      const response: Trip[] = await get(`/booking/search/trip?departureProvinceId=${departure?.id}&destinationProvinceId=${destination?.id}&startDate=${startDate}`);
       setDepartureTrip(response);
     } catch (error) {
       console.error('Error fetching search trip:', error);
     }
 
     try {
-      const response: Trip[] = await get(`/booking/search/trip?departureProvinceId=${destinationProvinceId}&destinationProvinceId=${departureProvinceId}&startDate=${startDate}`);
+      setIsLoading(true);
+      const response: Trip[] = await get(`/booking/search/trip?departureProvinceId=${destination?.id}&destinationProvinceId=${departure?.id}&startDate=${endDate}`);
       setRoundTrip(response);
     } catch (error) {
       console.error('Error fetching search trip:', error);
     }
+    setIsLoading(false);
 
   };
   const fetchSearchTrip = async () => {
-    const { departureProvinceId, destinationProvinceId, startDate } = searchParams;
+    setIsLoading(true);
+    const { departure, destination, startDate } = searchParams;
     try {
-      const response: Trip[] = await get(`/booking/search/trip?departureProvinceId=${departureProvinceId}&destinationProvinceId=${destinationProvinceId}&startDate=${startDate}`);
+      const response: Trip[] = await get(`/booking/search/trip?departureProvinceId=${departure?.id}&destinationProvinceId=${destination?.id}&startDate=${startDate}`);
 
       setDepartureTrip(response);
     } catch (error) {
       console.error('Error fetching search trip:', error);
     }
+    setIsLoading(false);
   };
 
-  return { departureTrip, roundTrip, fetchSearchTrip, fetchSearchRoundTrip,  setSearchParams };
+  return { departureTrip, roundTrip, fetchSearchTrip, fetchSearchRoundTrip, searchParams ,setSearchParams, isLoading };
 }
 
 

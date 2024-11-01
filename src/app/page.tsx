@@ -1,5 +1,5 @@
 "use client";
-import { DatePicker, FloatButton, Input } from "antd";
+import { DatePicker, FloatButton, Input, Tabs } from "antd";
 import Image from "next/image";
 import dayjs from "dayjs";
 import { WechatOutlined } from "@ant-design/icons";
@@ -10,12 +10,15 @@ import { useState } from "react";
 import { Province } from "@/types/models/Province";
 import { useProvince } from "@/hooks/custom/ProvinceHook";
 import {  useSearchTrip } from "@/hooks/custom/SearchTripHook";
+import TripCard from "@/components/home/TripCard";
+import Loading from "@/components/Loading";
 
 const dateFormat = "DD-MM-YYYY";
 export default function Home() {
+  const [activeSearch, setActiveSearch] = useState(false)
   const { provinces } = useProvince();
   const [ isRoundTrip, setIsRoundTrip ] = useState<boolean>(false);
-  const { departureTrip, roundTrip, fetchSearchTrip, fetchSearchRoundTrip,  setSearchParams } = useSearchTrip();
+  const { departureTrip, roundTrip, fetchSearchTrip, fetchSearchRoundTrip, searchParams ,setSearchParams, isLoading } = useSearchTrip();
 
   const onChangeValueSearch = (name: string, value: any) => {
     setSearchParams(prevState => ({
@@ -30,7 +33,53 @@ export default function Home() {
     } else {
       fetchSearchTrip();
     }
-    
+    setActiveSearch(true)
+  }
+
+  const setItemTab = () =>{
+    if (isRoundTrip) {
+      return[{
+        key: '1',
+        label: "CHUYẾN ĐI: " + searchParams.departure?.provinceName + ' - ' + searchParams.destination?.provinceName,
+        children: isLoading ? (
+          <Loading/>
+        ) : departureTrip.length > 0 ? (
+          departureTrip.map((trip) => (
+            <TripCard key={trip.id} tripProps={trip} onClickTrip={()=>console.log(trip)} />
+          ))
+        ) : (
+          <p>Không có chuyến đi nào được tìm thấy.</p>
+        ),
+      },
+        {
+          key: '2',
+          label: "CHUYẾN VỀ: " + searchParams.destination?.provinceName + ' - '+ searchParams.departure?.provinceName,
+          children: isLoading ? (
+            <Loading/>
+          ) : roundTrip.length > 0 ? (
+            roundTrip.map((trip) => (
+              <TripCard key={trip.id} tripProps={trip} onClickTrip={()=>console.log(trip)} />
+            ))
+          ) : (
+            <p>Không có chuyến đi nào được tìm thấy.</p>
+          ),
+        }]
+
+    }
+
+    return [{
+      key: '1',
+      label: "CHUYẾN ĐI: " + searchParams.departure?.provinceName + ' - ' + searchParams.destination?.provinceName,
+      children: isLoading ? (
+        <Loading/>
+      ) : departureTrip.length > 0 ? (
+        departureTrip.map((trip) => (
+          <TripCard key={trip.id} tripProps={trip} onClickTrip={()=>console.log(trip)} />
+        ))
+      ) : (
+        <p>Không có chuyến đi nào được tìm thấy.</p>
+      ),
+    }]
   }
 
   return (
@@ -124,8 +173,8 @@ export default function Home() {
                       <ProvincePicker
                         title={"Điểm đi"}
                         provinces={provinces}
-                        onSelectProvince={(id: number, name: string) =>
-                          onChangeValueSearch("departureProvinceId",id)
+                        onSelectProvince={(province: Province) =>
+                          onChangeValueSearch("departure",province)
                         }
                       />
                     </div>
@@ -147,8 +196,8 @@ export default function Home() {
                       <ProvincePicker
                         title={"Điểm đi"}
                         provinces={provinces}
-                        onSelectProvince={(id: number, name: string) =>
-                          onChangeValueSearch("destinationProvinceId",id)
+                        onSelectProvince={(province: Province) =>
+                          onChangeValueSearch("destination",province)
                         }
                       />
                     </div>
@@ -324,6 +373,13 @@ export default function Home() {
             </div>
 
             {/*trip*/}
+
+            <div className={"w-full"}>
+              {activeSearch && (
+                <Tabs defaultActiveKey="1" items={setItemTab()}/>
+              )}
+            </div>
+        
 
             {/*filter*/}
           </div>

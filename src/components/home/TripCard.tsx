@@ -2,7 +2,7 @@ import { formatTime, getHours} from "@/utils/timeUtils";
 import {formatCurrency} from "@/utils/formatCurrency";
 import Image from "next/image";
 import { Trip } from "@/types/models/Trip";
-export default function TripCard( {tripProps , onClickTrip} : {tripProps : Trip, onClickTrip : void} ) {
+export default function TripCard( {tripProps , onClickTrip} : {tripProps : Trip, onClickTrip: () => void} ) {
   return (
     <div className={"rounded-xl border-2  px-4 py-4 shadow mb-5 hover:border-orange-500 hover:shadow-2xl transition-shadow"}>
 
