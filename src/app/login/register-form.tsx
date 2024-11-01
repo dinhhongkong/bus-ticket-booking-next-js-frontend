@@ -1,6 +1,6 @@
 'use client'
 import {EllipsisOutlined, EyeInvisibleOutlined, EyeTwoTone, InfoCircleOutlined, UserOutlined} from "@ant-design/icons";
-import {Button, Flex, Form, GetProp, Input, Tooltip} from "antd";
+import {Button, Flex, Input, Tooltip} from "antd";
 import {useState} from "react";
 
 export default function RegisterForm() {
@@ -11,7 +11,7 @@ export default function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const sharedProps = {
-    onChange: (newOtp) => setOtp(newOtp),
+    onChange: (newOtp: any) => setOtp(newOtp),
     value: otp,
   }
 
