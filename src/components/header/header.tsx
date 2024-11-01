@@ -3,7 +3,7 @@ import Link from "next/link";
 import styles from "./header.module.css";
 import Image from "next/image";
 import { useAuthContext } from "@/context/AuthContextProvider";
-import { Dropdown, Menu, MenuProps, Space } from "antd";
+import { Dropdown, MenuProps } from "antd";
 import { useRouter } from "next/navigation";
 import { useNotificationContext } from "@/context/NotificationContextProvider";
 
@@ -109,7 +109,7 @@ export default function Header() {
           <Link
             className={`mx-2 w-32 pb-3 text-center text-sm uppercase text-white
       hover:font-bold hover:text-white border-b-4 border-b-white font-bold`}
-            href="/tra-cuu-ve"
+            href="/check-ticket"
           >
             TRA CỨU VÉ
           </Link>
