@@ -15,6 +15,8 @@ export const useSearchTrip = () => {
   const [departureTrip, setDepartureTrip] = useState<Trip[]>([]);
   const [roundTrip, setRoundTrip] = useState<Trip[]>([]);
   const [searchParams, setSearchParams] = useState<SearchTripParams>({});
+  const [selectedDeparture, setSelectedDeparture] = useState<Trip >();
+  const [selectedRoundTrip, setSelectedRoundTrip] = useState<Trip>();
 
   const fetchSearchRoundTrip = async () => {
     const { departure, destination, startDate, endDate } = searchParams;
@@ -49,7 +51,7 @@ export const useSearchTrip = () => {
     setIsLoading(false);
   };
 
-  return { departureTrip, roundTrip, fetchSearchTrip, fetchSearchRoundTrip, searchParams ,setSearchParams, isLoading };
+  return { departureTrip, roundTrip, fetchSearchTrip, fetchSearchRoundTrip, searchParams ,setSearchParams, isLoading, selectedDeparture, setSelectedDeparture, selectedRoundTrip, setSelectedRoundTrip };
 }
 
 

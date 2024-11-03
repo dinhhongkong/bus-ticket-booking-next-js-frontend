@@ -6,19 +6,23 @@ import { WechatOutlined } from "@ant-design/icons";
 import { ProChat } from "@ant-design/pro-chat";
 import PopupChat from "@/components/popup-chat/PopupChat";
 import ProvincePicker from "@/components/home/ProvincePicker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Province } from "@/types/models/Province";
 import { useProvince } from "@/hooks/custom/ProvinceHook";
 import {  useSearchTrip } from "@/hooks/custom/SearchTripHook";
 import TripCard from "@/components/home/TripCard";
 import Loading from "@/components/Loading";
+import { useRouter } from "next/navigation";
+import { Trip } from "@/types/models/Trip";
 
 const dateFormat = "DD-MM-YYYY";
 export default function Home() {
+  const router = useRouter();
   const [activeSearch, setActiveSearch] = useState(false)
   const { provinces } = useProvince();
   const [ isRoundTrip, setIsRoundTrip ] = useState<boolean>(false);
-  const { departureTrip, roundTrip, fetchSearchTrip, fetchSearchRoundTrip, searchParams ,setSearchParams, isLoading } = useSearchTrip();
+  const { departureTrip, roundTrip, fetchSearchTrip, fetchSearchRoundTrip, searchParams ,setSearchParams, isLoading, selectedDeparture, setSelectedDeparture, selectedRoundTrip, setSelectedRoundTrip } = useSearchTrip();
+
 
   const onChangeValueSearch = (name: string, value: any) => {
     setSearchParams(prevState => ({
@@ -36,6 +40,31 @@ export default function Home() {
     setActiveSearch(true)
   }
 
+  const redirectToBookingSeat = () => {
+    if (isRoundTrip && selectedDeparture && selectedRoundTrip) {
+      router.push(`/booking-ticket?tripId=${selectedDeparture?.id}&isRoundTrip=${isRoundTrip}&returnTripId=${selectedRoundTrip?.id}`)
+    }
+    else if (!isRoundTrip && selectedDeparture) {
+      router.push(`/booking-ticket?tripId=${selectedDeparture?.id}&isRoundTrip=${isRoundTrip}&returnTripId=0`)
+    }
+  }
+
+  const addDeparture = (trip: Trip) => {
+    setSelectedDeparture(trip);
+    
+  }
+
+  const addReturn = (trip: Trip) => {
+    setSelectedRoundTrip(trip);
+  }
+
+  useEffect(() => {
+    redirectToBookingSeat();
+  }, [selectedDeparture, selectedRoundTrip]);
+
+
+
+
   const setItemTab = () =>{
     if (isRoundTrip) {
       return[{
@@ -45,7 +74,7 @@ export default function Home() {
           <Loading/>
         ) : departureTrip.length > 0 ? (
           departureTrip.map((trip) => (
-            <TripCard key={trip.id} tripProps={trip} onClickTrip={()=>console.log(trip)} />
+            <TripCard key={trip.id} tripProps={trip} onClickTrip={()=> addDeparture(trip)} />
           ))
         ) : (
           <p>Không có chuyến đi nào được tìm thấy.</p>
@@ -58,7 +87,7 @@ export default function Home() {
             <Loading/>
           ) : roundTrip.length > 0 ? (
             roundTrip.map((trip) => (
-              <TripCard key={trip.id} tripProps={trip} onClickTrip={()=>console.log(trip)} />
+              <TripCard key={trip.id} tripProps={trip} onClickTrip={()=> addReturn(trip)} />
             ))
           ) : (
             <p>Không có chuyến đi nào được tìm thấy.</p>
@@ -74,7 +103,7 @@ export default function Home() {
         <Loading/>
       ) : departureTrip.length > 0 ? (
         departureTrip.map((trip) => (
-          <TripCard key={trip.id} tripProps={trip} onClickTrip={()=>console.log(trip)} />
+          <TripCard key={trip.id} tripProps={trip} onClickTrip={()=> addDeparture(trip)} />
         ))
       ) : (
         <p>Không có chuyến đi nào được tìm thấy.</p>
@@ -284,11 +313,7 @@ export default function Home() {
         <div className={"xl:w-[1128px] mx-auto mt-12"}>
           <div className={"flex justify-between gap-10 "}>
             {/*filter*/}
-            <div
-              className={
-                "w-[300px] min-w-[300px] h-full sticky top-4 border shadow-xl rounded-xl"
-              }
-            >
+            <div className={"w-[300px] min-w-[300px] h-full sticky top-4 border shadow-xl rounded-xl"}>
               <div className={"flex justify-between p-4"}>
                 <div>Bộ lọc tìm kiếm</div>
                 <div className={"cursor-pointer text-[#E12424]"}>Bỏ lọc</div>
