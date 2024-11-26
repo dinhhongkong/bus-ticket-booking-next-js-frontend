@@ -2,7 +2,7 @@ import { formatTime, getHours} from "@/utils/timeUtils";
 import {formatCurrency} from "@/utils/formatCurrency";
 import Image from "next/image";
 import { Trip } from "@/types/models/Trip";
-export default function TripCard( {tripProps , onClickTrip} : {tripProps : Trip, onClickTrip: () => void} ) {
+export default function TripCard( {tripProps , onClickTrip} : {tripProps : Trip, onClickTrip: ( trip: Trip) => void} ) {
   return (
     <div className={"rounded-xl border-2  px-4 py-4 shadow mb-5 hover:border-orange-500 hover:shadow-2xl transition-shadow"}>
 
@@ -51,7 +51,7 @@ export default function TripCard( {tripProps , onClickTrip} : {tripProps : Trip,
 
       <div className={"flex flex-grow "}>
         <button className={"mr-0 ml-auto rounded-xl font-medium bg-orange-200 text-orange-600 p-1 hover:bg-orange-600 hover:text-white"}
-              onClick={onClickTrip}>
+              onClick={() => onClickTrip(tripProps)}>
           <span className={"m-1"}>Chọn chuyến</span>
         </button>
       </div>

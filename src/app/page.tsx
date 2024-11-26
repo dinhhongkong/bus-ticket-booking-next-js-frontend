@@ -2,9 +2,6 @@
 import { DatePicker, FloatButton, Input, Tabs } from "antd";
 import Image from "next/image";
 import dayjs from "dayjs";
-import { WechatOutlined } from "@ant-design/icons";
-import { ProChat } from "@ant-design/pro-chat";
-import PopupChat from "@/components/popup-chat/PopupChat";
 import ProvincePicker from "@/components/home/ProvincePicker";
 import { useEffect, useState } from "react";
 import { Province } from "@/types/models/Province";
@@ -16,6 +13,8 @@ import { useRouter } from "next/navigation";
 import { Trip } from "@/types/models/Trip";
 
 const dateFormat = "DD-MM-YYYY";
+
+
 export default function Home() {
   const router = useRouter();
   const [activeSearch, setActiveSearch] = useState(false)
@@ -411,22 +410,7 @@ export default function Home() {
         </div>
       </div>
 
-    
-
-      {/* <PopupChat />
-
-      
-      <FloatButton
-        icon={<WechatOutlined style={{ fontSize: "25px" }} />}
-        description="Chatbot"
-        shape="circle"
-        style={{
-          width: "70px",
-          height: "70px",
-          fontSize: "24px",
-          backgroundColor: "#fb923c",
-        }}
-      /> */}
+  
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Header from "@/components/header/header";
 import Footer from "@/components/footer/footer";
 import { AuthProvider } from "@/context/AuthContextProvider";
 import { NotificationProvider } from "@/context/NotificationContextProvider";
+import { ChatBotProvider } from "@/context/ChatbotContextProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,11 +20,13 @@ export default function RootLayout({
     <html lang="en">
       <NotificationProvider>
         <AuthProvider>
+          <ChatBotProvider>
           <body>
             <Header />
             {children}
             <Footer />
           </body>
+          </ChatBotProvider>
         </AuthProvider>
       </NotificationProvider>
     </html>
