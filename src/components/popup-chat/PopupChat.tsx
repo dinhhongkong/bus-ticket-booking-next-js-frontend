@@ -1,9 +1,16 @@
 'use client'
+import { useChatBot } from "@/hooks/custom/ChatBotHook";
 import { ProChat } from "@ant-design/pro-chat";
 import { Modal } from "antd";
-import { use, useEffect } from "react";
+import { use, useEffect, useState } from "react";
+
 
 export default function PopupChat({isOpen}: {isOpen: boolean}) {
+  const {chats,setChats,deleteChatsFromLocalStorage, fetchAnswer } = useChatBot();
+  
+
+  
+  
   
   return (
     <>
@@ -26,11 +33,17 @@ export default function PopupChat({isOpen}: {isOpen: boolean}) {
           locale="en-US"
           style={{ height: "70vh" }}
           helloMessage={
-            "Welcome to ProChat, I am your exclusive robot, this is our Github：[ProChat](https://github.com/ant-design/pro-chat)"
+            "Xin chào quý khách, đây là trợ lý ảo của nhà xe Phương Trang, không biết quý khách có thắc mắc gì với dịch vụ ạ"
           }
-          request={async (messages) => {
-            const mockedData: string = `This is a simulated conversation data. ${messages.length} messages were passed in this session [Đăng nhập](http://localhost:3000/login)`;
-            return new Response(mockedData);
+          chats={chats}
+          
+          onChatsChange={(chats) => {
+            setChats(chats)
+          }}
+          
+          request={async (messages ) => {
+            const response : string = await fetchAnswer(messages)
+            return new Response(response);
           }}
         />
       </Modal>
