@@ -47,7 +47,5 @@ export const useChatBot = () => {
     localStorage.removeItem("chatHistory");
   };
 
-
-
   return {chats,setChats,deleteChatsFromLocalStorage, fetchAnswer };
 };
