@@ -209,7 +209,7 @@ export default function Home() {
                   </div>
 
                   <Image
-                    className={`absolute z-10 cursor-pointer object-contain transition-transform duration-300 transform rotate-0 bottom-6 h-8 w-8 lg:bottom-5 lg:h-10 lg:w-10`}
+                    className={`absolute top-7 z-10 cursor-pointer object-contain transition-transform duration-300 transform rotate-0 bottom-6 h-8 w-8 lg:bottom-5 lg:h-10 lg:w-10`}
                     width={50}
                     height={50}
                     src={"/assets/switch_location.svg"}
