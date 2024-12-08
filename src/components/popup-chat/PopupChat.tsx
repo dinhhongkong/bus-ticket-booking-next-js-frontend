@@ -8,9 +8,6 @@ import { use, useEffect, useState } from "react";
 export default function PopupChat({isOpen}: {isOpen: boolean}) {
   const {chats,setChats,deleteChatsFromLocalStorage, fetchAnswer } = useChatBot();
   
-
-  
-  
   
   return (
     <>
