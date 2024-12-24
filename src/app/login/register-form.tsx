@@ -1,4 +1,6 @@
 'use client'
+import { post } from "@/api/api";
+import { useNotificationContext } from "@/context/NotificationContextProvider";
 import {EllipsisOutlined, EyeInvisibleOutlined, EyeTwoTone, InfoCircleOutlined, UserOutlined} from "@ant-design/icons";
 import {Button, Flex, Input, Tooltip} from "antd";
 import {useState} from "react";
@@ -7,8 +9,10 @@ export default function RegisterForm() {
 
   const [process, setProcess] = useState(1)
   const [otp, setOtp] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const { notify } = useNotificationContext();
 
   const sharedProps = {
     onChange: (newOtp: any) => setOtp(newOtp),
@@ -21,7 +25,7 @@ export default function RegisterForm() {
       //   alert('Vui l ng nh p m  x c th c')
       //   return
       // }
-      setProcess(2)
+      setProcess(3)
     } else if (process === 2) {
       // if (!password || !confirmPassword) {
       //   alert('Vui l ng nh p m t kh u')
@@ -33,7 +37,36 @@ export default function RegisterForm() {
       // }
       setProcess(3)
     }
+    else if (process === 3) {
+      registerAction()
+    }
   }
+
+
+  const registerAction = async ()=> {
+    if (password !== confirmPassword) {
+      notify.info("Mật khẩu xác nhận không giống nhau, vui lòng thử lại")
+      return
+    }
+    console.log(email, otp, password)
+    try {
+      const register = {  
+        username : email,
+        password : password, 
+      }
+      const data = await post("/auth/register", register);
+      notify.info("Đăng kí thành công vui lòng đăng nhập")
+    }
+    catch (error) {
+      console.error("Error fetching data:", error);
+      notify.info("Email đã có người sử dụng")
+    }
+    finally {
+
+    }
+  }
+
+
 
   return (
     <div
@@ -48,9 +81,9 @@ export default function RegisterForm() {
             <Tooltip title="Nhập email">
               <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
             </Tooltip>
+            
           }
-
-
+          onChange={(e) => setEmail(e.target.value)}
           rootClassName={"mt-6 p-3"}
         />
       )}
@@ -92,6 +125,7 @@ export default function RegisterForm() {
               onClick={handleNext}
       >
         {process !== 3 ? 'Tiếp tục' : 'Đăng ký'}
+        
       </Button>
 
     </div>

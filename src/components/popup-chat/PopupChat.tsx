@@ -19,7 +19,8 @@ export default function PopupChat({isOpen}: {isOpen: boolean}) {
           right:20
     
         }}
-      
+        width={1100}
+
         open={isOpen}
         mask={false}
         getContainer={false}
