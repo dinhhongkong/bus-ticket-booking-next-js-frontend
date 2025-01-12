@@ -1,3 +1,26 @@
+## Link backend repository using Spring Boot with microservices architecture [Click here](https://github.com/dinhhongkong/bus-ticket-booking-microservices)
+
+## Giao diện đăng nhập/đăng ký
+<img title="a title" alt="Alt text" src="screenshot/login.png">
+
+## Giao diện trang chủ
+<img title="a title" alt="Alt text" src="screenshot/home.png">
+
+## Giao diện tìm kiếm chuyến đi
+<img title="a title" alt="Alt text" src="screenshot/search.png">
+
+## Giao diện chọn ghế sau khi chọn chuyến
+<img title="a title" alt="Alt text" src="screenshot/seat.png">
+
+## Giao diện thông tin thanh toán
+<img title="a title" alt="Alt text" src="screenshot/payment.png">
+
+## Giao diện cổng thanh toán VNPay
+<img title="a title" alt="Alt text" src="screenshot/vnpay2.png">
+
+## Giao diện trạng thái thanh toán
+<img title="a title" alt="Alt text" src="screenshot/payment-status.png">
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
